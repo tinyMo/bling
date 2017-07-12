@@ -1,0 +1,19 @@
+//
+//  macros.pch
+//  bling
+//
+//  Created by 楼 彬 on 17/7/7.
+//  Copyright (c) 2017年 lb1006. All rights reserved.
+//
+
+#ifndef bling_macros_pch
+#define bling_macros_pch
+
+
+
+#define kNotification_data_refresh      @"kNotification_data_refresh"
+
+#define kScreenWidth                    [UIScreen mainScreen].bounds.size.width
+
+
+#endif
