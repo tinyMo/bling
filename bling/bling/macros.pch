@@ -12,8 +12,16 @@
 
 
 #define kNotification_data_refresh      @"kNotification_data_refresh"
+#define kNotification_edit              @"kNotification_edit"
+#define kNotification_cancelEdit        @"kNotification_cancelEdit"
+
+
 
 #define kScreenWidth                    [UIScreen mainScreen].bounds.size.width
+
+
+
+#define kTextColor                      [UIColor colorWithRed:50.0f/255.0f green:50.0f/255.0f blue:50.0f/255.0f alpha:1.0f]
 
 
 #endif

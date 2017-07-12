@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0B2FAAA51F069635004859A5 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B2FAAA41F069635004859A5 /* StatusView.m */; };
 		0B2FAAA91F06A3D9004859A5 /* CustomLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B2FAAA81F06A3D9004859A5 /* CustomLine.m */; };
+		0B4201481F164CEF0099F42E /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B4201471F164CEF0099F42E /* CustomCell.m */; };
 		0BF26EB21EE64FCF00658CEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF26EB11EE64FCF00658CEE /* main.m */; };
 		0BF26EB51EE64FCF00658CEE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF26EB41EE64FCF00658CEE /* AppDelegate.m */; };
 		0BF26EB81EE64FCF00658CEE /* bling.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0BF26EB61EE64FCF00658CEE /* bling.xcdatamodeld */; };
@@ -42,6 +43,8 @@
 		0B2FAAA71F06A3D9004859A5 /* CustomLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLine.h; sourceTree = "<group>"; };
 		0B2FAAA81F06A3D9004859A5 /* CustomLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLine.m; sourceTree = "<group>"; };
 		0B2FAAAE1F0F4A4E004859A5 /* macros.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.pch; sourceTree = "<group>"; };
+		0B4201461F164CEF0099F42E /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
+		0B4201471F164CEF0099F42E /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
 		0BF26EAC1EE64FCE00658CEE /* bling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BF26EB01EE64FCE00658CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BF26EB11EE64FCF00658CEE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -105,6 +108,15 @@
 				0B2FAAA81F06A3D9004859A5 /* CustomLine.m */,
 			);
 			name = Custom;
+			sourceTree = "<group>";
+		};
+		0B4201451F164CB70099F42E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0B4201461F164CEF0099F42E /* CustomCell.h */,
+				0B4201471F164CEF0099F42E /* CustomCell.m */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		0BF26EA31EE64FCE00658CEE = {
@@ -185,6 +197,7 @@
 		0BF26EDE1EE7C8B000658CEE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0B4201451F164CB70099F42E /* Cells */,
 				0B2FAAA61F06A3C2004859A5 /* Custom */,
 				0BF26EDF1EE7C8D600658CEE /* InputView.h */,
 				0BF26EE01EE7C8D600658CEE /* InputView.m */,
@@ -369,6 +382,7 @@
 			files = (
 				0B2FAAA91F06A3D9004859A5 /* CustomLine.m in Sources */,
 				0BF26EB51EE64FCF00658CEE /* AppDelegate.m in Sources */,
+				0B4201481F164CEF0099F42E /* CustomCell.m in Sources */,
 				0BF26EDB1EE6709200658CEE /* DataBase.m in Sources */,
 				0BF26EE51EE830A700658CEE /* ListViewController.m in Sources */,
 				0BF26EB21EE64FCF00658CEE /* main.m in Sources */,

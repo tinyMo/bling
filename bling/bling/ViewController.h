@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "InputView.h"
+#import "BlingListView.h"
 
 
-@interface ViewController : UIViewController<InputViewDelegate>
+@interface ViewController : UIViewController<InputViewDelegate, BlingListViewDelegate>
 
 
 @end

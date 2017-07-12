@@ -11,12 +11,29 @@
 #import "InputView.h"
 
 
+@protocol BlingListViewDelegate <NSObject>
+
+
+- (void)startEdit;
+- (void)cancelEdit;
+
+
+@end
+
+
+
+
 @interface BlingListView : UIView
 
+
 @property (nonatomic, weak) InputView * inputView;
+@property (nonatomic, weak) id<BlingListViewDelegate> delegate;
 
 
 - (void)reloadTadayData;
+
+- (void)respondtoEdit;
+- (void)cancelEdit;
 
 
 @end

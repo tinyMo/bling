@@ -20,10 +20,23 @@
 @end
 
 
+
+
 @interface InputView : UIView<UITextFieldDelegate>
 
 
 @property(nonatomic, weak) id<InputViewDelegate> delegate;
+@property (nonatomic, weak) UITextField * textField;
+
+
+
 
 
 @end
+
+
+
+
+
+
+

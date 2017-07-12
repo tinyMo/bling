@@ -8,11 +8,13 @@
 
 #import "BlingListView.h"
 #import "DataBase.h"
+#import "CustomCell.h"
+
 
 
 #define BLINGLIST_IDENTIFER  @"blinglist_identifer"
 
-@interface BlingListView ()<UITableViewDataSource, UITableViewDelegate>
+@interface BlingListView ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
 @property(nonatomic, strong) UITableView *blingListView;
 @property(nonatomic, strong) NSMutableArray *dataArray;
@@ -36,6 +38,7 @@
         
         
         [self initBlingListView:frame];
+        
     }
     
     return self;
@@ -67,24 +70,46 @@
     self.blingListView.layer.masksToBounds = YES;
     self.blingListView.delegate = self;
     self.blingListView.dataSource = self;
-    self.blingListView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 20.0f)];
+    self.blingListView.showsVerticalScrollIndicator = NO;
+    
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20.0f)];
+    footView.backgroundColor = [UIColor clearColor];
+    self.blingListView.tableFooterView = footView;
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 10.0f)];
+    headerView.backgroundColor = [UIColor clearColor];
+    self.blingListView.tableHeaderView = headerView;
     [self addSubview:self.blingListView];
     
     //输入数据界面
-    InputView * inputView = [[InputView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 44.0f)];
-    self.blingListView.tableHeaderView = inputView;
+    InputView * inputView = [[InputView alloc] initWithFrame:CGRectMake(0, -44.0f, frame.size.width, 44.0f)];
+    [self.blingListView addSubview:inputView];
     self.inputView = inputView;
 }
 
 
 //初始化今天的数据
-- (void)initTadayData
-{
+- (void)initTadayData {
+    
     self.dataArray = [NSMutableArray arrayWithArray:[DataBase sharedInstance].todaylistData];
 }
 
 
+- (void)respondtoEdit {
+    
+    
+    self.blingListView.contentInset = UIEdgeInsetsMake(44.0f, 0, 0, 0);
+    [self.inputView.textField becomeFirstResponder];
+}
 
+
+- (void)cancelEdit {
+    
+    self.blingListView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    [self.inputView.textField resignFirstResponder];
+    
+    [self.inputView.textField setText:@""];
+}
 
 
 #pragma mark - DELEGATE
@@ -102,17 +127,40 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BLINGLIST_IDENTIFER];
+    CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:BLINGLIST_IDENTIFER];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BLINGLIST_IDENTIFER];
+        cell = [[CustomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BLINGLIST_IDENTIFER];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+//    
+//    NSInteger row = (indexPath.row % 2);
+//    
+//    if (row == 0) {
+//        
+//        cell.backgroundColor = [UIColor lightGrayColor];
+//    } else {
+//        
+//        cell.backgroundColor = [UIColor whiteColor];
+//    }
     
-    [cell.textLabel setText:[self.dataArray objectAtIndex:indexPath.row]];
+    
+    
+    [cell updateText:[self.dataArray objectAtIndex:indexPath.row]];
     
     return cell;
     
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([self.inputView.textField.text isEqualToString:@""]) {
+        
+        if ([self.delegate respondsToSelector:@selector(cancelEdit)]) {
+            [self.delegate cancelEdit];
+        }
+    }
 }
 
 
@@ -123,13 +171,22 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+//    NSLog(@"offset = %f", scrollView.contentOffset.y);
     
+    if (scrollView.contentOffset.y <= -44.0f) {
+        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, -44.0f);
+    }
 }
 
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    
+    if (scrollView.contentOffset.y == -44.0f) {
+        
+        if ([self.delegate respondsToSelector:@selector(startEdit)]) {
+            [self.delegate startEdit];
+        }
+    }
 }
 
 
@@ -138,9 +195,11 @@
 #pragma mark - DATASOURCE
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 64.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString * text = [self.dataArray objectAtIndex:indexPath.row];
+    
+    return [CustomCell cellHeight:text];
 }
 
 

@@ -10,23 +10,53 @@
 #import "ListViewController.h"
 #import "DataBase.h"
 #import "StatusView.h"
-#import "BlingListView.h"
+
+
+typedef NS_ENUM(NSInteger, BlingListStatus) {
+    statusNormal,
+    statusEdit
+};
+
 
 
 
 @interface ViewController ()
 
 
-@property(nonatomic, strong) InputView *inputView;
 @property(nonatomic, weak) BlingListView *listView;
+
+@property(nonatomic) BlingListStatus blingStatus;
 
 
 @end
 
+
+
+
+
 @implementation ViewController
 
 
-#pragma mark - PUBLIC
+
+- (instancetype)init {
+    
+    self = [super init];
+    
+    if (self) {
+        
+        self.blingStatus = statusNormal;
+        
+        //通知注册
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataRefreshNotifaction) name:kNotification_data_refresh object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
+    }
+
+    
+    return self;
+}
+
+
 
 - (void)viewDidLoad {
     
@@ -39,10 +69,8 @@
     //load views
     [self loadViews];
     
-    
-    //更多配置
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataRefreshNotifaction) name:kNotification_data_refresh object:nil];
 }
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -82,27 +110,24 @@
     BlingListView *blingListView = [[BlingListView alloc] initWithFrame:CGRectMake(0, statusViewHeight, viewFrame.size.width, viewFrame.size.height - statusViewHeight)];
     [self.view addSubview:blingListView];
     blingListView.inputView.delegate = self;
+    blingListView.delegate = self;
     self.listView = blingListView;
 }
 
 
 
+#pragma mark - NOTIFICATION
 
-- (void)btnAction
-{
-    ListViewController *listViewController = [[ListViewController alloc] init];
-    listViewController.view.frame = self.view.bounds;
-    [self.view addSubview:listViewController.view];
+
+- (void)dataRefreshNotifaction {
     
-    [self presentViewController:listViewController animated:YES completion:^{
-
-    }];
+    [self.listView reloadTadayData];
 }
 
 
-- (void)dataRefreshNotifaction
-{
-    [self.listView reloadTadayData];
+- (void)keyboardWillHide {
+    
+    [self cancelEdit];
 }
 
 
@@ -110,14 +135,35 @@
 #pragma mark DELEGATE
 
 
-- (void)didReturnText:(NSString *)text
-{
+- (void)didReturnText:(NSString *)text {
+    
     [[DataBase sharedInstance] insertbling:text];
+    
+    [self cancelEdit];
 }
 
 
+- (void)startEdit {
+    
+    if (self.blingStatus == statusNormal) {
+        
+        self.blingStatus = statusEdit;
+        
+        [self.listView respondtoEdit];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_edit object:nil];
+    }
+}
 
-
+- (void)cancelEdit {
+    
+    if (self.blingStatus == statusEdit) {
+        
+        self.blingStatus = statusNormal;
+        
+        [self.listView cancelEdit];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_cancelEdit object:nil];
+    }
+}
 
 
 

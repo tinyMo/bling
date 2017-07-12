@@ -9,7 +9,16 @@
 #import "InputView.h"
 #import "CustomLine.h"
 
+
+@interface InputView ()
+
+
+
+@end
+
+
 @implementation InputView
+
 
 -(instancetype)initWithFrame:(CGRect)frame
 {
@@ -24,6 +33,12 @@
 }
 
 
+
+
+#pragma mark - PUBLIC
+
+
+
 #pragma mark PRIVATE METHOD
 
 - (void)initViews:(CGRect)frame
@@ -36,10 +51,13 @@
     
     UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(20.0f, frame.size.height - 10.0f - textFieldHeight, frame.size.width - 20.0f, textFieldHeight)];
     textField.backgroundColor = [UIColor clearColor];
-    textField.textColor = [UIColor blackColor];
+    textField.textColor = kTextColor;
+    textField.font = [UIFont fontWithName:@"PingFang SC" size:18.0f];;
     textField.placeholder = @"我想...";
     textField.delegate = self;
+    textField.keyboardType = UIKeyboardTypeDefault;
     [self addSubview:textField];
+    self.textField = textField;
 }
 
 
